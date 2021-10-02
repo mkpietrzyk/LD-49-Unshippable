@@ -9,24 +9,16 @@ public class CraneController : MonoBehaviour
     [SerializeField] private GameObject crane;
     [SerializeField] private GameObject craneTop;
     [SerializeField] private GameObject craneMagnetRail;
-    [SerializeField] private GameObject craneMagnet;
 
     public float movementSpeed = 2f;
     public float rotationSpeed = 10f;
     public float horizontalSpeed = 10f;
-    public float elevationSpeed = 6f;
 
     public float movementLimitLeft = -3f;
     public float movementLimitRight = 6.5f;
 
-    public float rotationAngleLimitLeft = -35f;
-    public float rotationAngleLimitRight = 35f;
-
     public float movementLimitForward = -2.96f;
     public float movementLimitBackward = -1.25F;
-
-    public float elevationLimitMin = 6f;
-    public float elevationLimitMax = 11.5f;
 
     // Update is called once per frame
     private void FixedUpdate()
@@ -50,16 +42,6 @@ public class CraneController : MonoBehaviour
         {
             RotateCrane("right");
         }
-        //
-        // if (Input.GetKey(KeyCode.UpArrow))
-        // {
-        //     // Move magnet up
-        // }
-        //
-        // if (Input.GetKey(KeyCode.DownArrow))
-        // {
-        //     // Move magnet down
-        // }
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
@@ -123,9 +105,5 @@ public class CraneController : MonoBehaviour
             Vector3 newPosition = new Vector3(0f, 0f, Time.deltaTime * horizontalSpeed);
             craneMagnetRail.transform.Translate(newPosition);
         }
-    }
-
-    private void MoveMagnetVertically()
-    {
     }
 }
