@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
         shipAngle.Value = 0;
         timeLeft.Value = 0;
     }
+
     void Update()
     {
         if (!gamePaused.Value && gameStarted.Value && Input.GetKeyDown(KeyCode.Escape))
@@ -49,11 +50,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void SelectLevel()
+    {
+        uiState.Value = "LevelSelectMenu";
+    }
+
+    public void StartGame(int index)
     {
         gameStarted.Value = true;
-        uiState.Value = "PlayerUI";
-        SceneManager.LoadScene("Game");
+        uiState.Value = "Game";
+        SceneManager.LoadScene(index);
     }
     
     public void EnterSandbox()
@@ -85,6 +91,7 @@ public class GameManager : MonoBehaviour
     {
         gameStarted.Value = false;
         gameEnded.Value = false;
+        gamePaused.Value = false;
         uiState.Value = "MainMenu";
         SceneManager.LoadScene("MainMenu");
     }
