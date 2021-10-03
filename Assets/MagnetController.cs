@@ -10,7 +10,6 @@ public class MagnetController : MonoBehaviour
     [SerializeField] private bool isGoingDown = false;
     [SerializeField] private bool isHoldingContainer = false;
     [SerializeField] private bool droppedContainer = false;
-    [SerializeField] private float magneticForce = 100;
     [SerializeField] private GameObject containerCaught;
 
     private void Update()
@@ -18,8 +17,7 @@ public class MagnetController : MonoBehaviour
         RaycastHit hit;
         Vector3 containerPosition = new Vector3(transform.localPosition.x, 0f, transform.localPosition.z);
         Vector3 returnVector = new Vector3(transform.localPosition.x, 11.5f, transform.localPosition.z);
-        float distance = 0;
-        
+
 
         if (Physics.SphereCast(transform.position, 0.1f, transform.TransformDirection(Vector3.down), out hit))
         {
@@ -60,8 +58,8 @@ public class MagnetController : MonoBehaviour
         {
             droppedContainer = true;
             isHoldingContainer = false;
-            containerCaught.GetComponent<Rigidbody>().isKinematic = false;
             containerCaught.transform.parent = null;
+            containerCaught.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 
