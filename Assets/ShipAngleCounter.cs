@@ -6,7 +6,7 @@ public class ShipAngleCounter : MonoBehaviour
 {
     public void UpdateAngle(float angle)
     {
-        string text = $"{angle}";
+        string text = $"{angle.ToString("F2")}";
         TextMeshProUGUI ugui = GetComponent<TextMeshProUGUI>();
         TextMeshPro gameUI = GetComponent<TextMeshPro>();
         if (ugui)

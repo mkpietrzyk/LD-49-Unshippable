@@ -7,7 +7,9 @@ public class TimeCounter : MonoBehaviour
 {
     public void UpdateCount(float time)
     {
-        string text = $"{time:D2} : 00";
+        int minutes = Mathf.FloorToInt(time / 60);
+        int seconds = Mathf.FloorToInt(time % 60);
+        string text = $"{minutes:D2}:{seconds:D2}";
         TextMeshProUGUI ugui = GetComponent<TextMeshProUGUI>();
         TextMeshPro gameUI = GetComponent<TextMeshPro>();
         if (ugui)

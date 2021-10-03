@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityAtoms.BaseAtoms;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,19 +9,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private IntVariable containersOn;
     [SerializeField] private FloatVariable shipAngle;
     [SerializeField] private FloatVariable timeLeft;
+    [SerializeField] private IntVariable containersGoal;
 
     public BoolVariable gameStarted;
     public BoolVariable gamePaused;
     public BoolVariable gameEnded;
     public StringVariable uiState;
-    public SetStringVariableValue setUIVisibility;
-
-    void Start()
-    {
-        containersOn.Value = 0;
-        shipAngle.Value = 0;
-        timeLeft.Value = 0;
-    }
 
     void Update()
     {
@@ -29,24 +23,27 @@ public class GameManager : MonoBehaviour
             PauseGame();
         }
 
-        // if (!gameEnded.Value && (cash.Value < 0 || householdsCount.Value == 30))
-        // {
-        //     gameEnded.Value = true;
-        //     uiState.Value = "EndMenu";
-        // }
-    }
-
-    private IEnumerator UpdateScore()
-    {
-        while (gameStarted.Value)
+        if (!gameEnded && (timeLeft.Value < 0 || shipAngle.Value > 30))
         {
-            yield return new WaitForSeconds(5);
-            // int cowsHappiness = (int) (cowsCount.Value * 1.5f);
-            // int cowsUnhapiness = (householdsCount.Value - cowsCount.Value) * 10;
-            // int cowsUnhapinessValue = cowsUnhapiness < 0 ? 0 : cowsUnhapiness;
-            // int currentBalance = householdsCount.Value * 20 + cowsCount.Value * cowsHappiness - cowsCount.Value * 5 - (int) connectionDistance.Value - cowsUnhapinessValue;
-            // balance.Value = currentBalance;
-            // cash.Value += currentBalance;
+            gameEnded.Value = true;
+            Time.timeScale = 0;
+            uiState.Value = "EndMenu";
+        }
+
+        if (!gameEnded && containersOn.Value == containersGoal.Value && shipAngle.Value < 30 && timeLeft.Value > 0)
+        {
+            gameEnded.Value = true;
+            Time.timeScale = 0;
+            uiState.Value = "EndMenu";
+        }
+
+        if (gameStarted)
+        {
+            if (timeLeft.Value > 0)
+            {
+                float newTime = timeLeft.Value - Time.deltaTime;
+                timeLeft.Value = newTime;    
+            }
         }
     }
 
@@ -57,8 +54,13 @@ public class GameManager : MonoBehaviour
 
     public void StartGame(int index)
     {
+        int[] containerGoals = {5, 10, 15, 20};
+        int[] timeLeftGoals = {180, 180, 240, 240};
+
         gameStarted.Value = true;
         uiState.Value = "Game";
+        timeLeft.Value = timeLeftGoals[index - 1];
+        containersGoal.Value = containerGoals[index - 1];
         SceneManager.LoadScene(index);
     }
     
@@ -83,7 +85,7 @@ public class GameManager : MonoBehaviour
     {
         gamePaused.Value = false;
         Time.timeScale = 1;
-        uiState.Value = "PlayerUI";
+        uiState.Value = "Game";
     }
 
 
@@ -93,6 +95,7 @@ public class GameManager : MonoBehaviour
         gameEnded.Value = false;
         gamePaused.Value = false;
         uiState.Value = "MainMenu";
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }
 
