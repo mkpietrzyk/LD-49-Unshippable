@@ -36,7 +36,7 @@ public class MagnetController : MonoBehaviour
         if (isGoingDown)
         {
             Vector3 magnetY = new Vector3(0, transform.localPosition.y, 0);
-            if (Vector3.Distance(magnetY, containerPosition) > 6f)
+            if (Vector3.Distance(magnetY, containerPosition) > 5.5f)
             {
                 transform.localPosition =
                     Vector3.MoveTowards(transform.localPosition, containerPosition, Time.deltaTime * 6f);
@@ -65,7 +65,6 @@ public class MagnetController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other);
         if (!droppedContainer && other.CompareTag("Container"))
         {
             other.transform.parent = transform;
